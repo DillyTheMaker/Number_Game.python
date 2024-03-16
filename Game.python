@@ -1,0 +1,62 @@
+import os
+import random
+
+logo = ("""
+ /$$   /$$                         /$$                                  /$$$$$$                                                            
+| $$$ | $$                        | $$                                 /$$__  $$                                                           
+| $$$$| $$ /$$   /$$ /$$$$$$/$$$$ | $$$$$$$   /$$$$$$   /$$$$$$       | $$  \__/ /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$ 
+| $$ $$ $$| $$  | $$| $$_  $$_  $$| $$__  $$ /$$__  $$ /$$__  $$      | $$ /$$$$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$
+| $$  $$$$| $$  | $$| $$ \ $$ \ $$| $$  \ $$| $$$$$$$$| $$  \__/      | $$|_  $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/
+| $$\  $$$| $$  | $$| $$ | $$ | $$| $$  | $$| $$_____/| $$            | $$  \ $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$      
+| $$ \  $$|  $$$$$$/| $$ | $$ | $$| $$$$$$$/|  $$$$$$$| $$            |  $$$$$$/|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$      
+|__/  \__/ \______/ |__/ |__/ |__/|_______/  \_______/|__/             \______/  \______/  \_______/|_______/|_______/  \_______/|__/      
+
+Welcome to the Number Guessing Game!
+I'm thinking of a number between 1 - 100.
+""")
+
+def clear_screen():
+    """Clears the terminal screen."""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def player_guess_fun(game_mode):
+    """Sets the number of guesses based on game mode."""
+    if game_mode == "easy":
+        return 10
+    elif game_mode == "hard":
+        return 5
+    else:
+        print("Invalid difficulty. Defaulting to easy.")
+        return 10
+
+def game():
+    """Runs the number guessing game."""
+    while True:
+        comp_num = random.randint(1, 100)
+        game_mode = input('Choose a difficulty. Type "easy" or "hard": ').lower()
+        player_guess_left = player_guess_fun(game_mode)
+
+        while player_guess_left > 0:
+            print(f"You have {player_guess_left} attempts remaining to guess the number.")
+            player_guess = int(input("Make a guess: "))
+            if player_guess > comp_num:
+                print("Too high.")
+            elif player_guess < comp_num:
+                print("Too low.")
+            else:
+                print(f"You got it! The answer was {comp_num}.")
+                break
+            player_guess_left -= 1
+
+        if player_guess_left == 0:
+            print(f"You've run out of guesses, you lose. The right answer was {comp_num}.")
+
+        replay = input("Do you want to play again? Type 'yes' or 'no': ").lower()
+        if replay != 'yes':
+            break
+        clear_screen()
+
+# Start the game
+clear_screen()
+print(logo)
+game()
